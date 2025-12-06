@@ -46,7 +46,9 @@ FillBlendTest::~FillBlendTest()
 
 KCL::KCL_Status FillBlendTest::Init()
 {
+    NGLOG_INFO("FillBlend: Init starting, calling m_shapes.Init()");
     m_shapes.Init();
+    NGLOG_INFO("FillBlend: m_shapes.Init() done, vbid=%d ibid=%d", m_shapes.m_fullscreen_vbid, m_shapes.m_fullscreen_ibid);
     m_backbuffers = m_screen_manager_component->GetBackbuffers();
     m_active_backbuffer_id = m_screen_manager_component->GetActiveBackbufferId();
     const std::string bb_count = std::to_string(m_backbuffers.size());
@@ -114,10 +116,14 @@ void FillBlendTest::Render()
     nglDepthState(render_job, NGL_DEPTH_ALWAYS, false);
 
     // Draw the quads
+    NGLOG_INFO("FillBlend: About to draw %d quads, vbid=%d ibid=%d shader=%d",
+        kQuadCount, m_shapes.m_fullscreen_vbid, m_shapes.m_fullscreen_ibid, m_shader);
     for (KCL::uint32 i = 0; i < kQuadCount; ++i)
     {
+        NGLOG_INFO("FillBlend: Drawing quad %d", i);
         // For simplicity, draw the same fullscreen quad repeatedly; driver should still process blend ops.
         nglDrawTwoSided(render_job, m_shader, m_shapes.m_fullscreen_vbid, m_shapes.m_fullscreen_ibid, uniforms);
+        NGLOG_INFO("FillBlend: Drew quad %d", i);
     }
 
     nglEnd(render_job);
@@ -232,6 +238,9 @@ KCL::KCL_Status FillBlendTest::InitPipelines()
             ad.m_attachment.m_idx = m_backbuffers[i];
             ad.m_attachment_load_op = NGL_LOAD_OP_CLEAR;
             ad.m_attachment_store_op = NGL_STORE_OP_STORE;
+            // Note: clear color is set on the texture descriptor, not attachment descriptor.
+            // The backbuffer's default clear is typically black; for fill rate test this is fine
+            // as we overwrite everything with white quads.
             jd.m_attachments.push_back(ad);
         }
         {
