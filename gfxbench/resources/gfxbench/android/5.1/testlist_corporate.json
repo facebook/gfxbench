@@ -265,6 +265,25 @@
             ]
         },
         {
+            "test_name": "gl_fill_blend",
+            "group_name": "group_low_level",
+            "run_order": 1,
+            "variant_postfixes": [
+                "",
+                "_off"
+            ],
+            "minimum_api": [
+                {"type": "GL", "major": 4, "minor" : 3},
+                {"type": "ES", "major": 3, "minor" : 1},
+                {"type": "VULKAN", "major": 1, "minor" : 0}
+            ],
+            "requirements": [
+            ],
+            "results": [
+                {"result_postfix": "", "unit": "Frames"}
+            ]
+        },
+        {
             "test_name": "gl_trex_qmatch",
             "group_name": "group_special",
             "run_order": 2,

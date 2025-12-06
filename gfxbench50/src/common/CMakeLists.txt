@@ -65,6 +65,9 @@ set(COMMON_SRC
 	gfxb_warmup_helper.h
 	gfxb_warmup_helper.cpp
 
+	gfxb_fill_blend.cpp
+	gfxb_fill_blend.h
+
 	gfxb_bilateral_fragment_blur.cpp
 	gfxb_bilateral_fragment_blur.h
 	gfxb_bloom_mobile.h
